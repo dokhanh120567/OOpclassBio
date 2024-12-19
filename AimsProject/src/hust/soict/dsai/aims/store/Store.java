@@ -1,48 +1,40 @@
 package hust.soict.dsai.aims.store;
-import hust.soict.dsai.aims.disc.DigitalVideoDisc;
+import java.util.*;
+import hust.soict.dsai.aims.media.Media;
 
+//Store
 public class Store {
-
-    private final int MAX_NUM = 10000;
-    private DigitalVideoDisc itemsInStore [] = new DigitalVideoDisc[MAX_NUM];
-    private int NumDVD;
-
-    public Store(){
-        NumDVD = 0;
-    }
-
-    public void addDVD(DigitalVideoDisc dvd){
-        itemsInStore[NumDVD] = dvd;
-        NumDVD += 1;
-    }
-
-    public void removeDVD(DigitalVideoDisc dvd){
-        int rmv_idx = -1;
-
-        for (int i = 0; i < NumDVD; i++){
-            if ( dvd.isMatchID( itemsInStore[i].getID() ) ){
-                rmv_idx = i;
-                break;
+	public static final int maxqty = 100;
+	private ArrayList<Media> itemsInStore = new
+			ArrayList<Media>();
+		
+///add media to the cart
+	public void addMedia(Media med) {
+		if (itemsInStore.size() < maxqty) {
+			itemsInStore.add(med);
+			System.out.println("The media " + med.getTitle() + " has been added to the store");
+		}else {System.out.println("The store is full");}
+	}
+//remove media from the cart
+	public void removeMedia(Media med) {
+		for (Media element : itemsInStore) {
+            if (element == med) {
+                itemsInStore.remove(med);
+                System.out.println("The media " + med.getTitle() + " has been removed from the store");
+            }else{System.out.println("The media is not in the store");}
+        }
+	}
+//search for media	
+	public Media search(String title) {
+        for (Media med : itemsInStore) {
+            if (med.getTitle().equals(title)) {
+                return med;
             }
         }
-
-        if (rmv_idx == -1){
-            System.out.println("DVD not found in Store!");
-        }
-        else{
-            for (int i = rmv_idx + 1; i < NumDVD; i++){
-                itemsInStore[i - 1] = itemsInStore[i]; 
-            }
-            NumDVD -= 1;
-            System.out.println("DVD removed");
-        }
+        return null;
     }
 
-    public void print(){
-        System.out.println("***************************STORE**************************\nItems:\n");
-        for (int i = 0; i < this.NumDVD; i++){
-            System.out.println((i + 1) + ". " + this.itemsInStore[i].toString());
-        }
-        System.out.println("**********************************************************");
+    public ArrayList<Media> getItemsInStore() {
+        return itemsInStore;
     }
 }
